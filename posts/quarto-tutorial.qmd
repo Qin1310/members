@@ -1,0 +1,248 @@
+---
+title: "Quarto 入门学习笔记"
+date: "2026-03-12"
+description: "从零开始学习 Quarto —— 现代科学写作与网站构建工具"
+categories: [Quarto, 技术学习]
+toc: true
+---
+
+## 什么是 Quarto？
+
+Quarto 是由 Posit（原 RStudio）开发的**新一代开源科学写作系统**，它基于 Pandoc，支持将 Markdown、R、Python、Julia 等代码与文档融合在一起，生成多种格式的输出，包括：
+
+- 📄 HTML 网页
+- 📑 PDF 文档
+- 📊 演示文稿（Revealjs）
+- 🌐 **静态网站**（就像你现在看到的这个！）
+- 📚 书籍（Quarto Book）
+
+::: {.callout-tip}
+**为什么选择 Quarto？**
+
+与传统 Word 文档不同，Quarto 支持**可重复研究（Reproducible Research）**——代码、数据和文字描述写在同一个文件里，每次渲染都能自动更新结果，不再需要手动复制粘贴图表！
+:::
+
+## YAML Front Matter
+
+每个 Quarto 文件的开头都有一段用 `---` 包围的 **YAML 配置区块**，用于设置文档的元数据和渲染选项。
+
+```yaml
+---
+title: "我的文章标题"
+author: "秦思怡"
+date: "2026-03-12"
+categories: [环境科学, 数据分析]
+toc: true          # 显示目录
+toc-depth: 3       # 目录深度
+format: html       # 输出格式
+---
+```
+
+常用 YAML 字段说明：
+
+| 字段 | 作用 |
+|------|------|
+| `title` | 文章/页面标题 |
+| `subtitle` | 副标题 |
+| `date` | 发布日期 |
+| `author` | 作者 |
+| `toc` | 是否显示目录（true/false） |
+| `categories` | 文章分类标签 |
+| `description` | 文章摘要描述 |
+
+## Markdown 基础语法
+
+Quarto 使用标准 Markdown 语法，以下是常用元素：
+
+**标题层级：**
+```markdown
+# 一级标题
+## 二级标题
+### 三级标题
+```
+
+**文字格式：**
+```markdown
+**粗体**   *斜体*   ~~删除线~~   `行内代码`
+```
+
+**列表：**
+```markdown
+- 无序列表项 1
+- 无序列表项 2
+
+1. 有序列表项 1
+2. 有序列表项 2
+```
+
+**链接与图片：**
+```markdown
+[链接文字](https://quarto.org)
+![图片描述](图片路径.png)
+```
+
+**表格：**
+```markdown
+| 列1 | 列2 | 列3 |
+|-----|-----|-----|
+| A   | B   | C   |
+```
+
+## 代码块使用
+
+Quarto 最强大的功能之一是**可执行代码块**，代码运行结果会直接嵌入文档。
+
+### Python 代码示例
+
+````markdown
+```{{python}}
+# 简单的数据分析示例
+data = [23, 45, 12, 67, 34, 89, 56]
+print(f"平均值：{sum(data)/len(data):.1f}")
+print(f"最大值：{max(data)}")
+print(f"最小值：{min(data)}")
+```
+````
+
+### 代码块选项
+
+````markdown
+```{{python}}
+#| echo: true      # 显示代码
+#| eval: true      # 执行代码
+#| warning: false  # 不显示警告
+#| fig-cap: "图表标题"  # 图表说明
+
+import matplotlib.pyplot as plt
+plt.plot([1, 2, 3], [4, 5, 6])
+plt.title("示例折线图")
+plt.show()
+```
+````
+
+| 选项 | 说明 |
+|------|------|
+| `echo` | 是否显示源代码 |
+| `eval` | 是否执行代码 |
+| `warning` | 是否显示警告信息 |
+| `output` | 是否显示输出结果 |
+| `fig-cap` | 图片标题 |
+
+::: {.callout-note}
+代码块选项使用 `#|` 开头（Quarto 风格），也兼容 `{r, echo=FALSE}` 的 RMarkdown 风格。
+:::
+
+## Callout 提示框
+
+Callout 是 Quarto 提供的一种**突出显示重要信息**的组件，有多种类型：
+
+```markdown
+::: {.callout-note}
+这是一个**注意**框，用于补充说明。
+:::
+
+::: {.callout-tip}
+这是一个**提示**框，用于给出实用建议。
+:::
+
+::: {.callout-important}
+这是一个**重要**框，用于强调关键信息。
+:::
+
+::: {.callout-warning}
+这是一个**警告**框，用于提醒注意风险。
+:::
+
+::: {.callout-caution}
+这是一个**谨慎**框，用于操作前的提醒。
+:::
+```
+
+渲染效果如下：
+
+::: {.callout-note}
+这是 **note** 类型，蓝色，用于一般性说明。
+:::
+
+::: {.callout-tip}
+这是 **tip** 类型，绿色，用于提供小技巧。
+:::
+
+::: {.callout-warning}
+这是 **warning** 类型，橙色，用于警示风险。
+:::
+
+::: {.callout-important}
+这是 **important** 类型，红色，用于强调重点。
+:::
+
+## 网站配置
+
+Quarto 网站通过项目根目录的 `_quarto.yml` 文件进行全局配置。
+
+```yaml
+project:
+  type: website          # 项目类型：网站
+
+website:
+  title: "我的网站"       # 网站标题
+  navbar:               # 顶部导航栏
+    background: primary # 导航栏背景色
+    left:               # 左侧菜单项
+      - href: index.qmd
+        text: 首页
+      - href: about.qmd
+        text: 关于我
+
+format:
+  html:
+    theme: cosmo        # 使用 cosmo 主题
+    css: styles.css     # 自定义样式文件
+    toc: true           # 默认显示目录
+```
+
+**常用主题列表：**
+
+| 主题名 | 风格特点 |
+|--------|----------|
+| `cosmo` | 现代简洁（本站使用） |
+| `flatly` | 扁平化设计 |
+| `darkly` | 深色主题 |
+| `minty` | 清新绿色 |
+| `solar` | 暖色调 |
+
+**渲染命令：**
+
+```bash
+# 预览网站（本地热重载）
+quarto preview
+
+# 渲染整个网站
+quarto render
+```
+
+## 小结
+
+通过这篇笔记，我学习了 Quarto 的核心功能：
+
+| 功能 | 掌握程度 |
+|------|----------|
+| YAML 配置 | ✅ 已掌握 |
+| Markdown 语法 | ✅ 已掌握 |
+| 代码块与选项 | 🔄 学习中 |
+| Callout 提示框 | ✅ 已掌握 |
+| 网站配置 | ✅ 已掌握 |
+| 自定义 CSS 样式 | 🔄 学习中 |
+
+::: {.callout-tip}
+**下一步学习计划**
+
+- 学习 Quarto 的列布局（`layout` 选项）
+- 掌握交叉引用（Cross-references）
+- 尝试用 Python 在 Quarto 中生成数据可视化图表
+- 探索 Quarto 发布到 GitHub Pages 的流程
+:::
+
+---
+
+*本笔记持续更新中，记录我的 Quarto 学习历程。*
